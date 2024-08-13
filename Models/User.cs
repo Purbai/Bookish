@@ -1,8 +1,8 @@
 namespace Bookish.Models;
 
-public class LibrarianViewModel
+public class User
 {
     public int Id { get; set; }
     public string Name { get; set; }
-
+    public decimal OutStandingFees{ get; set; }
 }

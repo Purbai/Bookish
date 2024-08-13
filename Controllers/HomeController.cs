@@ -29,7 +29,7 @@ public class HomeController : Controller
     public IActionResult Librarian()
     {
         Console.WriteLine("inside IActionResult Librarian");
-        return View(new LibrarianViewModel());
+        return View(new Librarian());
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

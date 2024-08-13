@@ -1,6 +1,6 @@
 namespace Bookish.Models;
 
-public class CatalogueViewModel
+public class Catalogue
 {
     public int Id { get; set; }
     public string Title { get; set; }
