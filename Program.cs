@@ -34,16 +34,16 @@ using (var context = new BookishContext())
     context.Database.EnsureCreated();
 
     //create entity objects
-    var librarian1 = new Librarian() { Id = 2, Name= "Jack" };
-    var user1 = new User() { Id= 2, Name = "Kiran", OutStandingFees = 0};
+    // var librarian1 = new Librarian() { Id = 2, Name= "Jack" };
+    // var user1 = new User() { Id= 2, Name = "Kiran", OutStandingFees = 0};
 
-    //add entitiy to the context
-    Console.WriteLine("Just above where we use the Add to add our data");
-    context.Librarian.Add(librarian1);
-    context.User.Add(user1);
+    // //add entitiy to the context
+    // Console.WriteLine("Just above where we use the Add to add our data");
+    // context.Librarian.Add(librarian1);
+    // context.User.Add(user1);
 
-    //save data to the database tables
-    context.SaveChanges();
+    // //save data to the database tables
+    // context.SaveChanges();
 
     //retrieve all the students from the database
     foreach (var s in context.Librarian) {
