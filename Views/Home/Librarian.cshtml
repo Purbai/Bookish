@@ -1,4 +1,6 @@
+@using Microsoft.EntityFrameworkCore
 @model Librarian
+
 @{
     ViewData["Title"] = "Librarian";
 }
@@ -8,10 +10,20 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p></p>
-    <p>Librarian page  ... Purbai</p>
+    <p>Librarian page ... Purbai</p>
 
-<p>Librarian number: @Model.Id</p>
-<p>Name: @Model.Name</p>
+
+    <p>Librarian number: @Model.Id</p>
+    <p>Name: @Model.Name</p>
 
 </div>
 
+@{
+    using (var context = new BookishContext())
+    {
+    foreach (var librarian in context.Librarian)
+    {
+        <p>@librarian.Id : @librarian.Name</p>
+    }
+    }
+}

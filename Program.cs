@@ -54,6 +54,22 @@ using (var context = new BookishContext())
     foreach (var s in context.User) {
         Console.WriteLine($"Id: {s.Id}, Name: {s.Name}, Outstanding Fee: {s.OutStandingFees}");
     }
+
+// Add data to all our tables except borrowed and return tables
+//Show data from database in frontend
+// add menu bar to allow user to add data or query data from front-end
+// validation to ensure that foreign is valid if used to add data which uses foreign key
+// do not allow data to be deleted if primary key is used as foriegn key in another table
+// allow user to sort data in the catalogue table
+// Allow user to borrow a item instance from catalogue
+// Allow user to return a item instance & work out if any penalty is payable
+//Allow librarian to add/remove item instances
+//Allow librarian to retrieve and organize catalogue
+
+
+
+
+
 }
 
 
