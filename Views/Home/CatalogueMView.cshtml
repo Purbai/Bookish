@@ -1,4 +1,4 @@
-@using Microsoft.EntityFrameworkCore
+@* @using Microsoft.EntityFrameworkCore
 @model CatalogueMView
 
 @{
@@ -20,9 +20,9 @@
             @foreach (var item in context.CatalogueMView)
             {
                 @*<p> @item </p> *@
-                <p> @item.Id | @item.Name | @item.Title | @item.PublishDate.ToShortDateString() | @item.Description | @item.Copies | @item.ItemTypeName </p>
+                @* <p> @item.Id | @item.Name | @item.Title | @item.PublishDate.ToShortDateString() | @item.Description | @item.Copies | @item.ItemTypeName </p>
             }
         }
     }
 
-</div>
+</div> *@

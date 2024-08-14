@@ -32,7 +32,7 @@ public class HomeController : Controller
         return View(new Librarian());
     }
 
-    public IActionResult CatalogueMView()
+/*     public IActionResult CatalogueMView()
     {
         Console.WriteLine("inside IActionResult CatalogueMView");
         return View(new CatalogueMView());
@@ -43,7 +43,7 @@ public class HomeController : Controller
     {
         Console.WriteLine("inside IActionResult CatalogueList");
         return View(new CatalogueList());
-    }
+    } */
 
 
     public IActionResult CatalogueInstance()

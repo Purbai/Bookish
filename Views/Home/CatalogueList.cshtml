@@ -1,4 +1,4 @@
-@using Microsoft.EntityFrameworkCore
+@* @using Microsoft.EntityFrameworkCore
 @model CatalogueList
 
 @{
@@ -20,14 +20,14 @@
             @foreach (var item in context.CatalogueList)
             {
                 @*<p> @item </p> *@
-                <p> @item.Id | @item.Name | @item.Title | @item.PublishDate.ToShortDateString() | @item.Description | @item.Copies |
+@*                 <p> @item.Id | @item.Name | @item.Title | @item.PublishDate.ToShortDateString() | @item.Description | @item.Copies |
                     @item.ItemTypeName </p>
             }
 
             <p> Display the dropdown catalogue list</p>
 
             string[] ListItem;
-            int i = 0;
+            int i = 0; *@
 @*             foreach (var item in context.CatalogueList)
             {
                 ListItem[i] = @item.Name;
@@ -41,4 +41,4 @@
 
     }
 
-</div>
+@* </div> *@ 
