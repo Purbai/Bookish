@@ -1,5 +1,4 @@
 @using Microsoft.EntityFrameworkCore
-@* @using System.Web.Helpers; *@
 @model Librarian
 
 @{
@@ -10,7 +9,6 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p></p>
     <p>Librarian page ... Purbai</p>
 
     <!-- <p>Librarian number: @Model.Id</p>
@@ -22,19 +20,17 @@
     using (var context = new BookishContext())
     {
 
-        var grid = new WebGrid(source: context.Librarian);
-
         <div>
-            @grid.GetHtml()
+            @foreach (var librarian in context.Librarian)
+            {
+            <p>@librarian.Id : @librarian.Name</p>
+            }
         </div>
 
-        //foreach (var librarian in context.Librarian)
-        //{
-            //<p>@librarian.Id : @librarian.Name</p>
-        //}
     }
 
-    <form method="post">
+
+    @*<form method="post">
         <fieldset>
             <legend>New Librarian</legend>
             <p><label for="title">Name:</label>
@@ -43,5 +39,5 @@
 
             <p><input type="submit" name="buttonSubmit" value="Add Movie" /></p>
         </fieldset>
-    </form>
+    </form>*@
 }

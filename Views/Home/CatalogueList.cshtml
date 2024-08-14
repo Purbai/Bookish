@@ -1,0 +1,40 @@
+@using Microsoft.EntityFrameworkCore
+@model CatalogueList
+
+@{
+    ViewData["Title"] = "CatalogueList";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to our catalogue!</h1>
+    <p>Choose the item you want to book or return</p>
+</div>
+
+<div>
+    @{
+
+        @using (var context = new BookishContext())
+        {
+            @foreach (var item in context.CatalogueList)
+            {
+                @*<p> @item </p> *@
+                <p> @item.Id | @item.Name | @item.Title | @item.PublishDate.ToShortDateString() | @item.Description | @item.Copies |
+                    @item.ItemTypeName </p>
+            }
+
+            <p> Display the dropdown catalogue list</p>
+            <select id="Item ID" name="LibraryList" size="4">
+                @foreach (var item in context.CatalogueList)
+                {
+
+                    <option value=@item.Name>@item.Name @item.Title @item.Description </option>
+                }
+            </select>
+            <input type="submit">
+            @* <p>@LibraryList.id</p> *@
+        }
+    }
+
+</div>

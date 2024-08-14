@@ -1,0 +1,24 @@
+@using Microsoft.EntityFrameworkCore
+@model CatalogueInstance
+
+@{
+    ViewData["Title"] = "CatalogueInstance";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="text-center">
+    <h1 class="display-4">Add or Remove catalogue instances</h1>
+    <p>Only librarians have access to this page</p>
+
+</div>
+
+<div>
+    @using (var context = new BookishContext())
+    {
+        @foreach (var item in context.CatalogueInstance)
+        {
+            <p>@item.Id : @item.CatalogueId | @item.DateAdded.ToShortDateString() | @item.LibrarianId | @item.Availability </p>
+        }
+    }
+</div>

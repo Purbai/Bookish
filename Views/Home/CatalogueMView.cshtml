@@ -1,0 +1,28 @@
+@using Microsoft.EntityFrameworkCore
+@model CatalogueMView
+
+@{
+    ViewData["Title"] = "CatalogueMview";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to our catalogue!</h1>
+    <p>Choose the item you want to book or return</p>
+</div>
+
+<div>
+    @{
+
+        @using (var context = new BookishContext())
+        {
+            @foreach (var item in context.CatalogueMView)
+            {
+                @*<p> @item </p> *@
+                <p> @item.Id | @item.Name | @item.Title | @item.PublishDate.ToShortDateString() | @item.Description | @item.Copies | @item.ItemTypeName </p>
+            }
+        }
+    }
+
+</div>

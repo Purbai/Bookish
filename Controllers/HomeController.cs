@@ -32,6 +32,26 @@ public class HomeController : Controller
         return View(new Librarian());
     }
 
+    public IActionResult CatalogueMView()
+    {
+        Console.WriteLine("inside IActionResult CatalogueMView");
+        return View(new CatalogueMView());
+    }
+
+    
+    public IActionResult CatalogueList()
+    {
+        Console.WriteLine("inside IActionResult CatalogueList");
+        return View(new CatalogueList());
+    }
+
+
+    public IActionResult CatalogueInstance()
+    {
+        Console.WriteLine("inside IActionResult CatalogueInstance");
+        return View(new CatalogueInstance());
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
