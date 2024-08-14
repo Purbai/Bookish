@@ -25,16 +25,20 @@
             }
 
             <p> Display the dropdown catalogue list</p>
-            <select id="Item ID" name="LibraryList" size="4">
-                @foreach (var item in context.CatalogueList)
-                {
 
-                    <option value=@item.Name>@item.Name @item.Title @item.Description </option>
-                }
-            </select>
-            <input type="submit">
-            @* <p>@LibraryList.id</p> *@
+            string[] ListItem;
+            int i = 0;
+@*             foreach (var item in context.CatalogueList)
+            {
+                ListItem[i] = @item.Name;
+                i=++;
+            }
+            <p>List of items ...</p> *@
+            @* @ListItem *@
+            @* @Html.DropDownListFor(model => context.CatalogueList, new SelectList(new[]{@item.Name, @item.Title, @item.Description})) *@
+
         }
+
     }
 
 </div>

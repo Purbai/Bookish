@@ -1,5 +1,10 @@
 using Bookish;
 using Bookish.Models;
+// using Newtonsoft.Json;
+// using NLog;
+// using NLog.Config;
+// using NLog.Targets;
+// using System.Xml;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,22 +38,55 @@ using (var context = new BookishContext())
     //creates db if not exists 
     context.Database.EnsureCreated();
 
+ /*    using (var reader = new StreamReader(".\\data-Author.csv"))
+
+    reader.ReadLine();
+    while (!reader.EndOfStream)
+    {
+        var authorLine = reader.ReadLine();
+        var authorValues = authorLine.Split(',');
+
+        var author = new Author()
+        {
+            Id = Int32.Parse(values[0]),
+            Name = values[1]
+        };
+        context.Author.Add(author);
+
+        context.SaveChanges();
+    } */
+
     //create entity objects
-    // var librarian1 = new Librarian() { Id = 2, Name= "Jack" };
+    //authors
+    var author1 = new Author() { Id = 1, Name= "Joan Smith" };
+    var author2 = new Author() { Id = 2, Name= "Jack Smith" };
+    var author3 = new Author() { Id = 3, Name= "James Black" };
+    var author4 = new Author() { Id = 4, Name= "R Royle" };
+    var author5 = new Author() { Id = 5, Name= "Terry James" };
+    var author6 = new Author() { Id = 6, Name= "Wendy Jackson" };
+    var author7 = new Author() { Id = 7, Name= "JJ Terence" };
+
     // var user1 = new User() { Id= 2, Name = "Kiran", OutStandingFees = 0};
 
-    // //add entitiy to the context
-    // Console.WriteLine("Just above where we use the Add to add our data");
-    // context.Librarian.Add(librarian1);
+    //add entitiy to the context
+    context.Author.Add(author1);
+    context.Author.Add(author2);
+    context.Author.Add(author3);
+    context.Author.Add(author4);
+    context.Author.Add(author5);
+    context.Author.Add(author6);
+    context.Author.Add(author7);
+
     // context.User.Add(user1);
 
-    // //save data to the database tables
-    // context.SaveChanges();
+    //save data to the database tables
+    context.SaveChanges();
 
-    //retrieve all the students from the database
-    // foreach (var s in context.Librarian) {
-    //     Console.WriteLine($"Id: {s.Id}, Librarian Name: {s.Name}");
-    // }
+    // retrieve all the students from the database
+    foreach (var a in context.Author)
+    {
+        Console.WriteLine($"Id: {a.Id}, Authr Name: {a.Name}");
+    }
 
     // //retrieve all the students from the database
     // foreach (var s in context.User) {
