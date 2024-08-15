@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Bookish.Models;
 
 public class CatalogueInstance
@@ -7,5 +9,6 @@ public class CatalogueInstance
     public DateTime DateAdded { get; set; }
     public int LibrarianId { get; set; }
     public string Availability { get; set; }
-
+    [ForeignKey("CatalogueId")]
+    public virtual Catalogue Catalogue { get; set; }
 }

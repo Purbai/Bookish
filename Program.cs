@@ -2,11 +2,7 @@ using System.Runtime.CompilerServices;
 using Bookish;
 using Bookish.Models;
 using Microsoft.EntityFrameworkCore;
-// using Newtonsoft.Json;
-// using NLog;
-// using NLog.Config;
-// using NLog.Targets;
-// using System.Xml;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,19 +69,19 @@ using (var context = new BookishContext())
     // CreateUserData(context);
 
     // // // Item Type data setup
-    // CreateItemTypeData(context);
+    CreateItemTypeData(context);
 
     // // Genre Data setup
-    // CreateGenreData(context);
+    CreateGenreData(context);
 
     // // //Catalogue Data setup
-    // CreateCatalogueData(context);
+  /*   CreateCatalogueData(context); */
 
     // CreateCatalogueInstanceData(context);
 
 
     // // create catalogue view ....
-    CreateCatalogueListView();
+    // CreateCatalogueListView();
 
     //Console.WriteLine($"Creating CatalogueList view : {fs},: {createVwSql}");
 
@@ -366,7 +362,7 @@ static void CreateCatalogueListView()
 /*     var query = context.Catalogue
                        .Where(s => s.Title == "Star Trek")
                        .FirstOrDefault<Catalogue>();  */
-                            var query = from st in context.Catalogue
+                var query = from st in context.Catalogue
                 where st.Title == "Star Trek"
                 select st; 
 
@@ -400,22 +396,32 @@ static void CreateCatalogueListView()
 
     Console.WriteLine($"catalogue data {catalogueData}: query {query}, cat1 = {cat1}");
 
+
+    var CatObjResult = from s in context.Catalogue
+                             where s.Id < 3
+                             select new { 
+                                CatalogueId = s.Id , 
+                                Name = s.Title
+                             };
+
+    foreach (var obj in CatObjResult)
+    {
+        Console.WriteLine($"Subset of catalogue data : {obj.CatalogueId}, {obj.Name}");
+    }
+
+    // catalogue.AuthorID =  author.id
+    var stud1 = context.Catalogue
+                   .Include<Catalogue>("Author")
+                   .Where(s => s.Id < 3)
+                   .FirstOrDefault<Catalogue>();
+    Console.WriteLine(stud1);
+    
+    // foreach (var obj1 in stud1)
+    //{
+    //    Console.WriteLine($"catalogue joined to Author : {stud1.Id}, {stud1.AuthorId}, {stud1.Title}");
+    //}
+
 }
 
 
 // replace the foreign key with the name/description column from the Foreign table
-
-
-
-
-// private static void Main(string[] args)
-// {
-//     var context = new SchoolContext();
-//     var studentsWithSameName = context.Students
-//                                       .Where(s => s.FirstName == GetName())
-//                                       .ToList();
-// }
-
-// public static string GetName() {
-//     return "Bill";
-// }

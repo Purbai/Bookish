@@ -17,13 +17,13 @@
 
         using (var context = new BookishContext())
         {
-            @foreach (var item in context.CatalogueList)
+ @*            @foreach (var item in context.CatalogueList)
             {
                 <p> @item </p> 
                  <p> @item.Id | @item.Name | @item.Title | @item.PublishDate.ToShortDateString() | @item.Description | @item.Copies |
                     @item.ItemTypeName </p>
             }
-
+ *@
             <p> Display the dropdown catalogue list</p>
 
             string[] ListItem;
