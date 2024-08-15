@@ -1,4 +1,4 @@
-@* @using Microsoft.EntityFrameworkCore
+@using Microsoft.EntityFrameworkCore
 @model CatalogueList
 
 @{
@@ -15,25 +15,25 @@
 <div>
     @{
 
-        @using (var context = new BookishContext())
+        using (var context = new BookishContext())
         {
             @foreach (var item in context.CatalogueList)
             {
-                @*<p> @item </p> *@
-@*                 <p> @item.Id | @item.Name | @item.Title | @item.PublishDate.ToShortDateString() | @item.Description | @item.Copies |
+                <p> @item </p> 
+                 <p> @item.Id | @item.Name | @item.Title | @item.PublishDate.ToShortDateString() | @item.Description | @item.Copies |
                     @item.ItemTypeName </p>
             }
 
             <p> Display the dropdown catalogue list</p>
 
             string[] ListItem;
-            int i = 0; *@
-@*             foreach (var item in context.CatalogueList)
-            {
+            int i = 0; 
+             @* @foreach (var item in context.CatalogueList) *@
+@*             {
                 ListItem[i] = @item.Name;
                 i=++;
             }
-            <p>List of items ...</p> *@
+            <p>List of items ...</p>  *@
             @* @ListItem *@
             @* @Html.DropDownListFor(model => context.CatalogueList, new SelectList(new[]{@item.Name, @item.Title, @item.Description})) *@
 
@@ -41,4 +41,4 @@
 
     }
 
-@* </div> *@ 
+</div> 

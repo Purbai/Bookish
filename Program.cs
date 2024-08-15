@@ -88,7 +88,7 @@ using (var context = new BookishContext())
     context.Author.Add(author7);
     context.Author.Add(author8);
     context.SaveChanges();
-    Console.WriteLine("setup data for Author");
+    Console.WriteLine("setup data for Author ....");
 
 
     // Librarian data setup
@@ -108,7 +108,7 @@ using (var context = new BookishContext())
     context.Librarian.Add(librarian4);
     context.Librarian.Add(librarian5);
     context.SaveChanges();
-    Console.WriteLine("setup data for Librarian");
+    Console.WriteLine("setup data for Librarian ....");
 
     // Penalty data setup
     s = "delete from \"Penalty\"";
@@ -123,7 +123,7 @@ using (var context = new BookishContext())
     context.Penalty.Add(penalty2);
     context.Penalty.Add(penalty3);
     context.SaveChanges();
-    Console.WriteLine("setup data for Penalty");
+    Console.WriteLine("setup data for Penalty ....");
 
     // User data setup
     s = "delete from \"User\"";
@@ -137,7 +137,7 @@ using (var context = new BookishContext())
     context.User.Add(user2);
     context.User.Add(user3);
     context.SaveChanges();
-    Console.WriteLine("setup data for User");
+    Console.WriteLine("setup data for User ....");
 
     // Item Type data setup
     s = "delete from \"ItemType\"";
@@ -151,7 +151,7 @@ using (var context = new BookishContext())
     context.ItemType.Add(itemType2);
     context.ItemType.Add(itemType3);
     context.SaveChanges();
-    Console.WriteLine("setup data for ItemType");
+    Console.WriteLine("setup data for ItemType ....");
 
     // Genre Data setup
     s = "delete from \"Genre\"";
@@ -175,7 +175,7 @@ using (var context = new BookishContext())
     context.Genre.Add(genre7);
     context.Genre.Add(genre8);
     context.SaveChanges();
-    Console.WriteLine("setup data for Genre");
+    Console.WriteLine("setup data for Genre ....");
 
     //Catalogue Data setup
     s = "delete from \"Catalogue\"";
@@ -186,7 +186,7 @@ using (var context = new BookishContext())
     DateTime datechk = Convert.ToDateTime("29/10/2001");
     DateTimeOffset dateTimeOffset = new DateTimeOffset(datechk, TimeSpan.Zero);  // Convert to DateTimeOffset
     DateTimeOffset utcDateTime = dateTimeOffset.ToUniversalTime();   // Convert to UTC
-    Console.WriteLine($"date checking : {datechk}, {utcDateTime}....");
+    //Console.WriteLine($"date checking : {datechk}, {utcDateTime}....");
 
     var catalogue1 = new Catalogue() { Id = 1, Title = "Star Trek", AuthorId = 1, GenreId = 4, Copies = 2, ItemTypeId = 1, PublishDate = utcDateTime.UtcDateTime };
     datechk = Convert.ToDateTime("01/01/1900");
@@ -211,7 +211,7 @@ using (var context = new BookishContext())
     context.Catalogue.Add(catalogue4);
     context.Catalogue.Add(catalogue5);
     context.SaveChanges();
-    Console.WriteLine("setup data for Catalogue");
+    Console.WriteLine("setup data for Catalogue ....");
 
     // Catalogue Instance Data setup
     s = "delete from \"CatalogueInstance\"";
@@ -256,13 +256,26 @@ using (var context = new BookishContext())
 
     //save data to the database tables
     context.SaveChanges();
-    Console.WriteLine("setup data for CatalogueInstance");
+    Console.WriteLine("setup data for CatalogueInstance ...");
 
+    // create catalogue view ....
+    s = "DROP VIEW \"CatalogueList\"";
+    fs = FormattableStringFactory.Create(s);
+    var dropVwSql = context.Database.ExecuteSql(fs);
+    Console.WriteLine($"dropped CatalogueList view : {fs},: {dropVwSql}");
+
+    Console.WriteLine("Creating CatatlogueList view ....");
+    s = "CREATE VIEW \"CatalogueList\" AS select c.\"Id\",a.\"Name\", c.\"Title\", c.\"PublishDate\", g.\"Description\", c.\"Copies\", i.\"ItemTypeName\" from \"Catalogue\" c join \"Author\" a on c.\"AuthorId\" = a.\"Id\" join \"Genre\" g on c.\"GenreId\" = g.\"Id\" join \"ItemType\" i on c.\"ItemTypeId\" = i.\"Id\"";
+    fs = FormattableStringFactory.Create(s);
+    var createVwSql = context.Database.ExecuteSql(fs);
+    //Console.WriteLine($"Creating CatalogueList view : {fs},: {createVwSql}");
+
+    Console.WriteLine("output from CatalogueList view .... ");
     // retrieve all the students from the database
-    // foreach (var a in context.Author)
-    // {
-    //     Console.WriteLine($"Id: {a.Id}, Authr Name: {a.Name}");
-    // }
+    foreach (var a in context.CatalogueList)
+    {
+        Console.WriteLine($"Id: {a.Id}, Authr Name: {a.Name}, Title: {a.Title}, Publication Date: {a.PublishDate}, Genre: {a.Description}, No of Copies: {a.Copies}, Item Type: {a.ItemTypeName}");
+    }
 
     // //retrieve all the students from the database
     // foreach (var s in context.User) {

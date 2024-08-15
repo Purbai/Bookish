@@ -14,8 +14,8 @@ namespace Bookish
         public DbSet<Librarian> Librarian { get; set; }
         public DbSet<Penalty> Penalty { get; set; }
         public DbSet<User> User { get; set; }
-/*         public DbSet<CatalogueMView> CatalogueMView { get; set; }
-        public DbSet<CatalogueList> CatalogueList { get; set;} */
+/*         public DbSet<CatalogueMView> CatalogueMView { get; set; } */
+        public DbSet<CatalogueList> CatalogueList { get; set;} 
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
