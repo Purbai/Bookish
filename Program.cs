@@ -61,11 +61,167 @@ using (var context = new BookishContext())
     //create entity objects
     //authors setup
 
-    // delete any rows that we had previous added
-    var s = "delete from \"Author\"";
-    var fs = FormattableStringFactory.Create(s);
-    var delDataSql = context.Database.ExecuteSql(fs);
-    Console.WriteLine($"Deleting : {fs},no of row deleted: {delDataSql}");
+    CreateAuthorData(context);
+
+    // Librarian data setup
+    CreateLibrarianData(context);
+
+    // Penalty data setup
+    CreatePenaltyData(context);
+
+    // User data setup
+    CreateUserData(context);
+
+    // Item Type data setup
+    CreateItemTypeData(context);
+
+    // Genre Data setup
+    CreateGenreData(context);
+
+    //Catalogue Data setup
+    CreateCatalogueData(context);
+    
+    CreateCatalogueInstanceData(context);
+ 
+
+    // create catalogue view ....
+    CreateCatalogueListView(context);
+
+    //Console.WriteLine($"Creating CatalogueList view : {fs},: {createVwSql}");
+
+    Console.WriteLine("output from CatalogueList view .... ");
+    // retrieve all the students from the database
+    foreach (var a in context.CatalogueList)
+    {
+        Console.WriteLine($"Id: {a.Id}, Authr Name: {a.Name}, Title: {a.Title}, Publication Date: {a.PublishDate}, Genre: {a.Description}, No of Copies: {a.Copies}, Item Type: {a.ItemTypeName}");
+    }
+
+    // //retrieve all the students from the database
+    // foreach (var s in context.User) {
+    //     Console.WriteLine($"Id: {s.Id}, Name: {s.Name}, Outstanding Fee: {s.OutStandingFees}");
+    // }
+
+    // Add data to all our tables except borrowed and return tables
+    //Show data from database in frontend
+    // add menu bar to allow user to add data or query data from front-end
+    // validation to ensure that foreign is valid if used to add data which uses foreign key
+    // do not allow data to be deleted if primary key is used as foriegn key in another table
+    // allow user to sort data in the catalogue table
+    // Allow user to borrow a item instance from catalogue
+    // Allow user to return a item instance & work out if any penalty is payable
+    //Allow librarian to add/remove item instances
+    //Allow librarian to retrieve and organize catalogue
+
+}
+
+
+app.Run();
+
+static void CreateGenreData(BookishContext context)
+{
+    var sqlString= "delete from \"Genre\"";
+    var fSqlString = FormattableStringFactory.Create(sqlString);
+    var delDataSql = context.Database.ExecuteSql(fSqlString);
+    Console.WriteLine($"Deleting : {fSqlString},no of row deleted: {delDataSql}");
+    var genre1 = new Genre() { Id = 1, Description = "Fiction" };
+    var genre2 = new Genre() { Id = 2, Description = "Non-Fiction" };
+    var genre3 = new Genre() { Id = 3, Description = "Religion" };
+    var genre4 = new Genre() { Id = 4, Description = "Science" };
+    var genre5 = new Genre() { Id = 5, Description = "Cooking" };
+    var genre6 = new Genre() { Id = 6, Description = "Sports" };
+    var genre7 = new Genre() { Id = 7, Description = "Walking" };
+    var genre8 = new Genre() { Id = 8, Description = "Music" };
+    context.Genre.Add(genre1);
+    context.Genre.Add(genre2);
+    context.Genre.Add(genre3);
+    context.Genre.Add(genre4);
+    context.Genre.Add(genre5);
+    context.Genre.Add(genre6);
+    context.Genre.Add(genre7);
+    context.Genre.Add(genre8);
+    context.SaveChanges();
+    Console.WriteLine("setup data for Genre ....");
+}
+
+static void CreateItemTypeData(BookishContext context)
+{
+  
+    var sqlString = "delete from \"ItemType\"";
+    var fSqlString = FormattableStringFactory.Create(sqlString);
+    var delDataSql = context.Database.ExecuteSql(fSqlString);
+    Console.WriteLine($"Deleting : {fSqlString},no of row deleted: {delDataSql}");
+    var itemType1 = new ItemType() { Id = 1, ItemTypeName = "Book", MaxBorrowingPeriod = 21 };
+    var itemType2 = new ItemType() { Id = 3, ItemTypeName = "Newspaper/Magazine", MaxBorrowingPeriod = 5 };
+    var itemType3 = new ItemType() { Id = 2, ItemTypeName = "CD", MaxBorrowingPeriod = 14 };
+    context.ItemType.Add(itemType1);
+    context.ItemType.Add(itemType2);
+    context.ItemType.Add(itemType3);
+    context.SaveChanges();
+    Console.WriteLine("setup data for ItemType ....");
+}
+
+static void CreateUserData(BookishContext context)
+{
+    var sqlString = "delete from \"User\"";
+    var fSqlString = FormattableStringFactory.Create(sqlString);
+    var delDataSql = context.Database.ExecuteSql(fSqlString);
+    Console.WriteLine($"Deleting : {fSqlString},no of row deleted: {delDataSql}");
+    var user1 = new User() { Id = 1, Name = "Yash", OutStandingFees = 0.0M };
+    var user2 = new User() { Id = 2, Name = "Kiran", OutStandingFees = 0.0M };
+    var user3 = new User() { Id = 3, Name = "Sasha", OutStandingFees = 0.20M };
+    context.User.Add(user1);
+    context.User.Add(user2);
+    context.User.Add(user3);
+    context.SaveChanges();
+    Console.WriteLine("setup data for User ....");
+}
+
+static void CreatePenaltyData(BookishContext context)
+{
+    var sqlString = "delete from \"Penalty\"";
+    var fSqlString = FormattableStringFactory.Create(sqlString);
+    var delDataSql = context.Database.ExecuteSql(fSqlString);
+    Console.WriteLine($"Deleting : {fSqlString},no of row deleted: {delDataSql}");
+    // needed to 'M' for the decimal values
+    var penalty1 = new Penalty() { Id = 1, ItemType = "Book", PenaltyPerDay = 0.25M };
+    var penalty2 = new Penalty() { Id = 2, ItemType = "CD", PenaltyPerDay = 0.50M };
+    var penalty3 = new Penalty() { Id = 3, ItemType = "Newspaper/Magazine", PenaltyPerDay = 0.10M };
+    context.Penalty.Add(penalty1);
+    context.Penalty.Add(penalty2);
+    context.Penalty.Add(penalty3);
+    context.SaveChanges();
+    Console.WriteLine("setup data for Penalty ....");
+    }
+
+static void CreateLibrarianData(BookishContext context)
+{
+    var sqlString = "delete from \"Librarian\"";
+    var fSqlString = FormattableStringFactory.Create(sqlString);
+    var delDataSql = context.Database.ExecuteSql(fSqlString);
+    Console.WriteLine($"Deleting : {fSqlString},no of row deleted: {delDataSql}");
+
+    var librarian1 = new Librarian() { Id = 1, Name = "Joan" };
+    var librarian2 = new Librarian() { Id = 2, Name = "Jack" };
+    var librarian3 = new Librarian() { Id = 4, Name = "Test" };
+    var librarian4 = new Librarian() { Id = 5, Name = "Claudia" };
+    var librarian5 = new Librarian() { Id = 3, Name = "test user" };
+    context.Librarian.Add(librarian1);
+    context.Librarian.Add(librarian2);
+    context.Librarian.Add(librarian3);
+    context.Librarian.Add(librarian4);
+    context.Librarian.Add(librarian5);
+    context.SaveChanges();
+    Console.WriteLine("setup data for Librarian ....");
+
+}
+
+static void CreateAuthorData(BookishContext context)
+{
+        // delete any rows that we had previous added
+    var sqlString = "delete from \"Author\"";
+    var fSqlString = FormattableStringFactory.Create(sqlString);
+    var delDataSql = context.Database.ExecuteSql(fSqlString);
+    Console.WriteLine($"Deleting : {fSqlString},no of row deleted: {delDataSql}");
 
     // now set the data for new rows to be added
     var author1 = new Author() { Id = 1, Name = "Joan Smith" };
@@ -90,98 +246,14 @@ using (var context = new BookishContext())
     context.SaveChanges();
     Console.WriteLine("setup data for Author ....");
 
+}
 
-    // Librarian data setup
-    s = "delete from \"Librarian\"";
-    fs = FormattableStringFactory.Create(s);
-    delDataSql = context.Database.ExecuteSql(fs);
-    Console.WriteLine($"Deleting : {fs},no of row deleted: {delDataSql}");
-
-    var librarian1 = new Librarian() { Id = 1, Name = "Joan" };
-    var librarian2 = new Librarian() { Id = 2, Name = "Jack" };
-    var librarian3 = new Librarian() { Id = 4, Name = "Test" };
-    var librarian4 = new Librarian() { Id = 5, Name = "Claudia" };
-    var librarian5 = new Librarian() { Id = 3, Name = "test user" };
-    context.Librarian.Add(librarian1);
-    context.Librarian.Add(librarian2);
-    context.Librarian.Add(librarian3);
-    context.Librarian.Add(librarian4);
-    context.Librarian.Add(librarian5);
-    context.SaveChanges();
-    Console.WriteLine("setup data for Librarian ....");
-
-    // Penalty data setup
-    s = "delete from \"Penalty\"";
-    fs = FormattableStringFactory.Create(s);
-    delDataSql = context.Database.ExecuteSql(fs);
-    Console.WriteLine($"Deleting : {fs},no of row deleted: {delDataSql}");
-    // needed to 'M' for the decimal values
-    var penalty1 = new Penalty() { Id = 1, ItemType = "Book", PenaltyPerDay = 0.25M };
-    var penalty2 = new Penalty() { Id = 2, ItemType = "CD", PenaltyPerDay = 0.50M };
-    var penalty3 = new Penalty() { Id = 3, ItemType = "Newspaper/Magazine", PenaltyPerDay = 0.10M };
-    context.Penalty.Add(penalty1);
-    context.Penalty.Add(penalty2);
-    context.Penalty.Add(penalty3);
-    context.SaveChanges();
-    Console.WriteLine("setup data for Penalty ....");
-
-    // User data setup
-    s = "delete from \"User\"";
-    fs = FormattableStringFactory.Create(s);
-    delDataSql = context.Database.ExecuteSql(fs);
-    Console.WriteLine($"Deleting : {fs},no of row deleted: {delDataSql}");
-    var user1 = new User() { Id = 1, Name = "Yash", OutStandingFees = 0.0M };
-    var user2 = new User() { Id = 2, Name = "Kiran", OutStandingFees = 0.0M };
-    var user3 = new User() { Id = 3, Name = "Sasha", OutStandingFees = 0.20M };
-    context.User.Add(user1);
-    context.User.Add(user2);
-    context.User.Add(user3);
-    context.SaveChanges();
-    Console.WriteLine("setup data for User ....");
-
-    // Item Type data setup
-    s = "delete from \"ItemType\"";
-    fs = FormattableStringFactory.Create(s);
-    delDataSql = context.Database.ExecuteSql(fs);
-    Console.WriteLine($"Deleting : {fs},no of row deleted: {delDataSql}");
-    var itemType1 = new ItemType() { Id = 1, ItemTypeName = "Book", MaxBorrowingPeriod = 21 };
-    var itemType2 = new ItemType() { Id = 3, ItemTypeName = "Newspaper/Magazine", MaxBorrowingPeriod = 5 };
-    var itemType3 = new ItemType() { Id = 2, ItemTypeName = "CD", MaxBorrowingPeriod = 14 };
-    context.ItemType.Add(itemType1);
-    context.ItemType.Add(itemType2);
-    context.ItemType.Add(itemType3);
-    context.SaveChanges();
-    Console.WriteLine("setup data for ItemType ....");
-
-    // Genre Data setup
-    s = "delete from \"Genre\"";
-    fs = FormattableStringFactory.Create(s);
-    delDataSql = context.Database.ExecuteSql(fs);
-    Console.WriteLine($"Deleting : {fs},no of row deleted: {delDataSql}");
-    var genre1 = new Genre() { Id = 1, Description = "Fiction" };
-    var genre2 = new Genre() { Id = 2, Description = "Non-Fiction" };
-    var genre3 = new Genre() { Id = 3, Description = "Religion" };
-    var genre4 = new Genre() { Id = 4, Description = "Science" };
-    var genre5 = new Genre() { Id = 5, Description = "Cooking" };
-    var genre6 = new Genre() { Id = 6, Description = "Sports" };
-    var genre7 = new Genre() { Id = 7, Description = "Walking" };
-    var genre8 = new Genre() { Id = 8, Description = "Music" };
-    context.Genre.Add(genre1);
-    context.Genre.Add(genre2);
-    context.Genre.Add(genre3);
-    context.Genre.Add(genre4);
-    context.Genre.Add(genre5);
-    context.Genre.Add(genre6);
-    context.Genre.Add(genre7);
-    context.Genre.Add(genre8);
-    context.SaveChanges();
-    Console.WriteLine("setup data for Genre ....");
-
-    //Catalogue Data setup
-    s = "delete from \"Catalogue\"";
-    fs = FormattableStringFactory.Create(s);
-    delDataSql = context.Database.ExecuteSql(fs);
-    Console.WriteLine($"Deleting : {fs},no of row deleted: {delDataSql}");
+static void CreateCatalogueData(BookishContext context)
+{
+var sqlString = "delete from \"Catalogue\"";
+    var fSqlString = FormattableStringFactory.Create(sqlString);
+    var delDataSql = context.Database.ExecuteSql(fSqlString);
+    Console.WriteLine($"Deleting : {fSqlString},no of row deleted: {delDataSql}");
 
     DateTime datechk = Convert.ToDateTime("29/10/2001");
     DateTimeOffset dateTimeOffset = new DateTimeOffset(datechk, TimeSpan.Zero);  // Convert to DateTimeOffset
@@ -212,15 +284,19 @@ using (var context = new BookishContext())
     context.Catalogue.Add(catalogue5);
     context.SaveChanges();
     Console.WriteLine("setup data for Catalogue ....");
+}
 
-    // Catalogue Instance Data setup
-    s = "delete from \"CatalogueInstance\"";
-    fs = FormattableStringFactory.Create(s);
-    delDataSql = context.Database.ExecuteSql(fs);
-    Console.WriteLine($"Deleting : {fs},no of row deleted: {delDataSql}");
-    datechk = Convert.ToDateTime("31/01/2002");
-    dateTimeOffset = new DateTimeOffset(datechk, TimeSpan.Zero); // Convert to DateTimeOffset
-    utcDateTime = dateTimeOffset.ToUniversalTime();  // Convert to UTC
+static void CreateCatalogueInstanceData(BookishContext context)
+{
+
+   // Catalogue Instance Data setup
+    var sqlString = "delete from \"CatalogueInstance\"";
+    var fSqlString = FormattableStringFactory.Create(sqlString);
+    var delDataSql = context.Database.ExecuteSql(fSqlString);
+    Console.WriteLine($"Deleting : {fSqlString},no of row deleted: {delDataSql}");
+    DateTime datechk = Convert.ToDateTime("31/01/2002");
+    DateTimeOffset dateTimeOffset = new DateTimeOffset(datechk, TimeSpan.Zero); // Convert to DateTimeOffset
+    DateTimeOffset utcDateTime = dateTimeOffset.ToUniversalTime();  // Convert to UTC
     var catalogueinstance1 = new CatalogueInstance() { Id = 1, CatalogueId = 1, DateAdded = utcDateTime.UtcDateTime, LibrarianId = 1, Availability = "Yes" };
     datechk = Convert.ToDateTime("01/01/2003");
     dateTimeOffset = new DateTimeOffset(datechk, TimeSpan.Zero); // Convert to DateTimeOffset
@@ -257,10 +333,12 @@ using (var context = new BookishContext())
     //save data to the database tables
     context.SaveChanges();
     Console.WriteLine("setup data for CatalogueInstance ...");
+}
 
-    // create catalogue view ....
-    s = "DROP VIEW \"CatalogueList\"";
-    fs = FormattableStringFactory.Create(s);
+static void CreateCatalogueListView(BookishContext context)
+{
+    var s = "DROP VIEW \"CatalogueList\"";
+    var fs = FormattableStringFactory.Create(s);
     var dropVwSql = context.Database.ExecuteSql(fs);
     Console.WriteLine($"dropped CatalogueList view : {fs},: {dropVwSql}");
 
@@ -268,32 +346,4 @@ using (var context = new BookishContext())
     s = "CREATE VIEW \"CatalogueList\" AS select c.\"Id\",a.\"Name\", c.\"Title\", c.\"PublishDate\", g.\"Description\", c.\"Copies\", i.\"ItemTypeName\" from \"Catalogue\" c join \"Author\" a on c.\"AuthorId\" = a.\"Id\" join \"Genre\" g on c.\"GenreId\" = g.\"Id\" join \"ItemType\" i on c.\"ItemTypeId\" = i.\"Id\"";
     fs = FormattableStringFactory.Create(s);
     var createVwSql = context.Database.ExecuteSql(fs);
-    //Console.WriteLine($"Creating CatalogueList view : {fs},: {createVwSql}");
-
-    Console.WriteLine("output from CatalogueList view .... ");
-    // retrieve all the students from the database
-    foreach (var a in context.CatalogueList)
-    {
-        Console.WriteLine($"Id: {a.Id}, Authr Name: {a.Name}, Title: {a.Title}, Publication Date: {a.PublishDate}, Genre: {a.Description}, No of Copies: {a.Copies}, Item Type: {a.ItemTypeName}");
-    }
-
-    // //retrieve all the students from the database
-    // foreach (var s in context.User) {
-    //     Console.WriteLine($"Id: {s.Id}, Name: {s.Name}, Outstanding Fee: {s.OutStandingFees}");
-    // }
-
-    // Add data to all our tables except borrowed and return tables
-    //Show data from database in frontend
-    // add menu bar to allow user to add data or query data from front-end
-    // validation to ensure that foreign is valid if used to add data which uses foreign key
-    // do not allow data to be deleted if primary key is used as foriegn key in another table
-    // allow user to sort data in the catalogue table
-    // Allow user to borrow a item instance from catalogue
-    // Allow user to return a item instance & work out if any penalty is payable
-    //Allow librarian to add/remove item instances
-    //Allow librarian to retrieve and organize catalogue
-
 }
-
-
-app.Run();
