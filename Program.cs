@@ -61,40 +61,40 @@ using (var context = new BookishContext())
     //create entity objects
     //authors setup
 
-    CreateAuthorData(context);
+    // CreateAuthorData(context);
 
-    // Librarian data setup
-    CreateLibrarianData(context);
+    // // // Librarian data setup
+    // CreateLibrarianData(context);
 
-    // Penalty data setup
-    CreatePenaltyData(context);
+    // // // Penalty data setup
+    // CreatePenaltyData(context);
 
-    // User data setup
-    CreateUserData(context);
+    // // // User data setup
+    // CreateUserData(context);
 
-    // Item Type data setup
-    CreateItemTypeData(context);
+    // // // Item Type data setup
+    // CreateItemTypeData(context);
 
-    // Genre Data setup
-    CreateGenreData(context);
+    // // Genre Data setup
+    // CreateGenreData(context);
 
-    //Catalogue Data setup
-    CreateCatalogueData(context);
-    
-    CreateCatalogueInstanceData(context);
- 
+    // // //Catalogue Data setup
+    // CreateCatalogueData(context);
 
-    // create catalogue view ....
-    CreateCatalogueListView(context);
+    // CreateCatalogueInstanceData(context);
+
+
+    // // create catalogue view ....
+    CreateCatalogueListView();
 
     //Console.WriteLine($"Creating CatalogueList view : {fs},: {createVwSql}");
 
-    Console.WriteLine("output from CatalogueList view .... ");
-    // retrieve all the students from the database
-    foreach (var a in context.CatalogueList)
-    {
-        Console.WriteLine($"Id: {a.Id}, Authr Name: {a.Name}, Title: {a.Title}, Publication Date: {a.PublishDate}, Genre: {a.Description}, No of Copies: {a.Copies}, Item Type: {a.ItemTypeName}");
-    }
+    // Console.WriteLine("output from CatalogueList view .... ");
+    // // retrieve all the students from the database
+    // foreach (var a in context.CatalogueList)
+    // {
+    //     Console.WriteLine($"Id: {a.Id}, Authr Name: {a.Name}, Title: {a.Title}, Publication Date: {a.PublishDate}, Genre: {a.Description}, No of Copies: {a.Copies}, Item Type: {a.ItemTypeName}");
+    // }
 
     // //retrieve all the students from the database
     // foreach (var s in context.User) {
@@ -119,7 +119,7 @@ app.Run();
 
 static void CreateGenreData(BookishContext context)
 {
-    var sqlString= "delete from \"Genre\"";
+    var sqlString = "delete from \"Genre\"";
     var fSqlString = FormattableStringFactory.Create(sqlString);
     var delDataSql = context.Database.ExecuteSql(fSqlString);
     Console.WriteLine($"Deleting : {fSqlString},no of row deleted: {delDataSql}");
@@ -141,11 +141,17 @@ static void CreateGenreData(BookishContext context)
     context.Genre.Add(genre8);
     context.SaveChanges();
     Console.WriteLine("setup data for Genre ....");
+
+    var genreDel1 = new Genre() { Id = 1 };
+    context.Genre.Remove(genre1);
+    context.SaveChanges();
+    Console.WriteLine("Deleted data for Genre 1 ....");
+
 }
 
 static void CreateItemTypeData(BookishContext context)
 {
-  
+
     var sqlString = "delete from \"ItemType\"";
     var fSqlString = FormattableStringFactory.Create(sqlString);
     var delDataSql = context.Database.ExecuteSql(fSqlString);
@@ -191,7 +197,7 @@ static void CreatePenaltyData(BookishContext context)
     context.Penalty.Add(penalty3);
     context.SaveChanges();
     Console.WriteLine("setup data for Penalty ....");
-    }
+}
 
 static void CreateLibrarianData(BookishContext context)
 {
@@ -217,7 +223,7 @@ static void CreateLibrarianData(BookishContext context)
 
 static void CreateAuthorData(BookishContext context)
 {
-        // delete any rows that we had previous added
+    // delete any rows that we had previous added
     var sqlString = "delete from \"Author\"";
     var fSqlString = FormattableStringFactory.Create(sqlString);
     var delDataSql = context.Database.ExecuteSql(fSqlString);
@@ -250,7 +256,7 @@ static void CreateAuthorData(BookishContext context)
 
 static void CreateCatalogueData(BookishContext context)
 {
-var sqlString = "delete from \"Catalogue\"";
+    var sqlString = "delete from \"Catalogue\"";
     var fSqlString = FormattableStringFactory.Create(sqlString);
     var delDataSql = context.Database.ExecuteSql(fSqlString);
     Console.WriteLine($"Deleting : {fSqlString},no of row deleted: {delDataSql}");
@@ -289,7 +295,7 @@ var sqlString = "delete from \"Catalogue\"";
 static void CreateCatalogueInstanceData(BookishContext context)
 {
 
-   // Catalogue Instance Data setup
+    // Catalogue Instance Data setup
     var sqlString = "delete from \"CatalogueInstance\"";
     var fSqlString = FormattableStringFactory.Create(sqlString);
     var delDataSql = context.Database.ExecuteSql(fSqlString);
@@ -335,15 +341,81 @@ static void CreateCatalogueInstanceData(BookishContext context)
     Console.WriteLine("setup data for CatalogueInstance ...");
 }
 
-static void CreateCatalogueListView(BookishContext context)
+static void CreateCatalogueListView()
 {
-    var s = "DROP VIEW \"CatalogueList\"";
-    var fs = FormattableStringFactory.Create(s);
-    var dropVwSql = context.Database.ExecuteSql(fs);
-    Console.WriteLine($"dropped CatalogueList view : {fs},: {dropVwSql}");
+    /*     var s = "DROP VIEW \"CatalogueList\"";
+        var fs = FormattableStringFactory.Create(s);
+        var dropVwSql = context.Database.ExecuteSql(fs);
+        Console.WriteLine($"dropped CatalogueList view : {fs},: {dropVwSql}");
 
-    Console.WriteLine("Creating CatatlogueList view ....");
-    s = "CREATE VIEW \"CatalogueList\" AS select c.\"Id\",a.\"Name\", c.\"Title\", c.\"PublishDate\", g.\"Description\", c.\"Copies\", i.\"ItemTypeName\" from \"Catalogue\" c join \"Author\" a on c.\"AuthorId\" = a.\"Id\" join \"Genre\" g on c.\"GenreId\" = g.\"Id\" join \"ItemType\" i on c.\"ItemTypeId\" = i.\"Id\"";
-    fs = FormattableStringFactory.Create(s);
-    var createVwSql = context.Database.ExecuteSql(fs);
+        Console.WriteLine("Creating CatatlogueList view ....");
+        s = "CREATE VIEW \"CatalogueList\" AS select c.\"Id\",a.\"Name\", c.\"Title\", c.\"PublishDate\", g.\"Description\", c.\"Copies\", i.\"ItemTypeName\" from \"Catalogue\" c join \"Author\" a on c.\"AuthorId\" = a.\"Id\" join \"Genre\" g on c.\"GenreId\" = g.\"Id\" join \"ItemType\" i on c.\"ItemTypeId\" = i.\"Id\"";
+        fs = FormattableStringFactory.Create(s);
+        var createVwSql = context.Database.ExecuteSql(fs); */
+
+    var context = new BookishContext();
+    /*     var query = context.Catalogue
+         .Where(s => s.Id == 1)
+                        .Select(s => new
+                        {
+                            Catalogue = s,
+                            Author = s.AuthorId
+                            // GradeTeachers = s.Grade.Teachers
+                        }); */
+
+/*     var query = context.Catalogue
+                       .Where(s => s.Title == "Star Trek")
+                       .FirstOrDefault<Catalogue>();  */
+                            var query = from st in context.Catalogue
+                where st.Title == "Star Trek"
+                select st; 
+
+    // context.SaveChanges();
+    
+  
+    var catalogueData = query.FirstOrDefault<Catalogue>();
+    var findCat = context.Catalogue.Find(9);
+    if (findCat ==null)
+    {
+    Console.WriteLine("No records found ....");
+    }
+    else
+    {
+    Console.WriteLine($"findcat : ,{findCat.Id} , {findCat.Title}");
+    }
+
+    int genreId = 8;
+    var cat1 = context.Catalogue.Where(s =>s.GenreId == genreId)
+                    .ToList();
+
+
+    foreach (var item in cat1)
+    {
+        Console.WriteLine($"{item.Id},{item.Title}");
+
+    }
+
+    Console.WriteLine($"using array list method .... {cat1[0].Id}, {cat1[0].Title}");
+    Console.WriteLine($"{cat1[1].Id}, {cat1[1].Title}");
+
+    Console.WriteLine($"catalogue data {catalogueData}: query {query}, cat1 = {cat1}");
+
 }
+
+
+// replace the foreign key with the name/description column from the Foreign table
+
+
+
+
+// private static void Main(string[] args)
+// {
+//     var context = new SchoolContext();
+//     var studentsWithSameName = context.Students
+//                                       .Where(s => s.FirstName == GetName())
+//                                       .ToList();
+// }
+
+// public static string GetName() {
+//     return "Bill";
+// }
